@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import Home from './pages/home/Home';
+import Paypal from './pages/cart/PayPalButton';
 import ContactUs from './pages/contactus/ContactUs';
 import Order from './pages/order/Order';
 import Cart from './pages/cart/Cart';
@@ -25,6 +26,7 @@ import ReturnPolicy from './pages/returnpolicy/ReturnPolicy';
 import AboutPage from './pages/about/About';
 import PrivacyPolicy from './pages/privacy/PrivacyPolicy';
 import AnalyticsGraph from './components/usergraph/AnalyticsGraph';
+import AnalyticsPage from './pages/visuals/AnalyticsPage';
 function App() {
   return (
     <MyState>
@@ -50,7 +52,7 @@ function App() {
           } />
           <Route path="/visuals" element={
             <ProtectedRoute>
-              <AnalyticsGraph />
+              <AnalyticsPage />
             </ProtectedRoute>           
           } />
 

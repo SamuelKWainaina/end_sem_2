@@ -1,31 +1,48 @@
-// PayPalButton.js
-import React from 'react';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+import React, { useRef, useEffect } from 'react';
 
-const PayPalButton = ({ totalAmount, onSuccess }) => {
+export default function Paypal() {
+  const paypalRef = useRef(null);
+
+  useEffect(() => {
+    const createOrder = async (data, actions, err) => {
+      return actions.order.create({
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            description: 'Cool looking table',
+            amount: {
+              currency_code:'USD',
+              value: 10000.0,
+            },
+          },
+        ],
+      });
+    };
+
+    const onApprove = async (data, actions) => {
+      const order = await actions.order.capture();
+      console.log(order);
+    };
+
+    const onError = (err) => {
+      console.log(err);
+    };
+
+    window.paypal
+      .Buttons({
+        createOrder,
+        onApprove,
+        onError,
+      })
+      .render(paypalRef.current);
+  }, []);
+
   return (
-    <PayPalScriptProvider options={{ 'client-id': 'AY4glB9bZ_t5gx1qFuke2scu-6vGVHwM3wO-4tTmVxHKKDE2_A7Ah-Gz_DRdY-hjp86x4b6djjXM1_jX' }}>
-      <PayPalButtons
-        style={{ layout: 'horizontal' }}
-        createOrder={(data, actions) => {
-          return actions.order.create({
-            purchase_units: [
-              {
-                amount: {
-                  value: totalAmount,
-                },
-              },
-            ],
-          });
-        }}
-        onApprove={(data, actions) => {
-          return actions.order.capture().then(function (details) {
-            onSuccess(); // Handle successful payment
-          });
-        }}
-      />
-    </PayPalScriptProvider>
+    <div>
+      <PayPalScriptProvider>
+        <PayPalButtons ref={paypalRef} />
+      </PayPalScriptProvider>
+    </div>
   );
-};
-
-export default PayPalButton;
+}

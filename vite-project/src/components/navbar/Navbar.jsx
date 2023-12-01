@@ -162,11 +162,15 @@ function Navbar() {
                       Signup
                     </Link>}
 
-                  {user?.user?.email === 'eph45454@gmail.com' ? 
+                  {user?.user?.email === 'wainainasamuel906@gmail.com' ? 
                    <Link to={'/dashboard'} className="text-sm font-medium text-gray-700 " style={{ color: mode === 'dark' ? 'white' : '', }}>
                     Admin
                   </Link> : ""}
                   
+                  {user?.user?.email === 'wainainasamuel906@gmail.com' ? 
+                   <Link to={'https://console.firebase.google.com/project/wondereats-22850/analytics/app/web:ZjFjYWY3N2QtYTM3Ni00MTk4LTgxNDgtYTM1OGQ5M2JiYWIx/overview/reports~2Fdashboard%3Fr%3Dfirebase-overview&fpn%3D324010108819'} className="text-sm font-medium text-gray-700 " style={{ color: mode === 'dark' ? 'white' : '', }}>
+                    Visuals
+                  </Link> : ""}
                 
                  {user ?  <a onClick={logout} className="text-sm font-medium text-gray-700 cursor-pointer  " style={{ color: mode === 'dark' ? 'white' : '', }}>
                     Logout
