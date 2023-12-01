@@ -54,5 +54,4 @@ function Order() {
     </Layout>
   )
 }
-
 export default Order
