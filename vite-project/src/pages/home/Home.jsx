@@ -1,4 +1,4 @@
-//We're importing react for the home function
+//We're importing react for the home page function
 import React, { useContext } from 'react'
 import Layout from '../../components/layout/Layout'
 import myContext from '../../context/data/myContext'
