@@ -15,15 +15,17 @@ function Allproducts() {
   const cartItems = useSelector((state)=> state.cart);
   console.log(cartItems)
 
+   // Function to add a product to the cart
   const addCart = (product)=> {
       dispatch(addToCart(product));
       toast.success('add to cart');
 
   }
-
+// Update local storage when cart items change
   useEffect(() => {
       localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems])
+  // Scroll to the top of the page on component mount
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
