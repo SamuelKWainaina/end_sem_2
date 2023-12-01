@@ -16,6 +16,7 @@ function ProductInfo() {
     const params = useParams()
     // console.log(products.title)
 
+     // Function to fetch product data from Firebase
     const getProductData = async () => {
         setLoading(true)
         try {
@@ -32,6 +33,7 @@ function ProductInfo() {
 
 
     useEffect(() => {
+        // Fetch product data when the component mounts
         getProductData()
 
     }, [])
@@ -49,6 +51,7 @@ function ProductInfo() {
     }
 
     useEffect(() => {
+         // Update localStorage when cartItems change
         localStorage.setItem('cart', JSON.stringify(cartItems));
     }, [cartItems])
 
