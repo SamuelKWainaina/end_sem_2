@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import Home from './pages/home/Home';
+import ContactUs from './pages/contactus/ContactUs';
 import Order from './pages/order/Order';
 import Cart from './pages/cart/Cart';
 import Dashboard from './pages/admin/dashboard/Dashboard';
@@ -20,12 +21,21 @@ import UpdateProduct from './pages/admin/page/UpdateProduct';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Allproducts from './pages/allproducts/Allproducts';
+import ReturnPolicy from './pages/returnpolicy/ReturnPolicy';
+import AboutPage from './pages/about/About';
+import PrivacyPolicy from './pages/privacy/PrivacyPolicy';
+import AnalyticsGraph from './components/usergraph/AnalyticsGraph';
 function App() {
   return (
     <MyState>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/returnpolicy" element={<ReturnPolicy />} />
+          <Route path ="/contactus" element={< ContactUs/>} />
           <Route path="/allproducts" element={<Allproducts />} />
           <Route path="/order" element={
             <ProtectedRoute>
@@ -36,8 +46,14 @@ function App() {
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <Dashboard />
-            </ProtectedRoute>
+            </ProtectedRoute>           
           } />
+          <Route path="/visuals" element={
+            <ProtectedRoute>
+              <AnalyticsGraph />
+            </ProtectedRoute>           
+          } />
+
           <Route path='/login' element={<Login/>} />
           <Route path='/signup' element={<Signup/>} />
           <Route path='/productinfo/:id' element={<ProductInfo/>} />
@@ -52,6 +68,7 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/*" element={<NoPage />} />
+          
         </Routes>
         <ToastContainer/>
       </Router>
@@ -78,7 +95,7 @@ export const ProtectedRoute = ({children}) => {
 const ProtectedRouteForAdmin = ({children})=> {
   const admin = JSON.parse(localStorage.getItem('user'))
   
-  if(admin.user.email === 'eph45454@gmail.com'){
+  if(admin.user.email === 'wainainasamuel906@gmail.com'){
     return children
   }
   else{

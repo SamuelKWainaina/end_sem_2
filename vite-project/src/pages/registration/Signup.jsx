@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import myContext from '../../context/data/myContext';
 import { toast } from 'react-toastify';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -11,46 +11,58 @@ function Signup() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     const context = useContext(myContext);
-    const { loading, setLoading } = context;
 
     const signup = async () => {
-        setLoading(true)
-        if (name === "" || email === "" || password === "") {
-            return toast.error("All fields are required")
+        setLoading(true);
+        setError("");
+
+        if (name === "" || email === "" || password === "" || confirmPassword === "") {
+            setError("All fields are required");
+            setLoading(false);
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError("Passwords do not match");
+            setLoading(false);
+            return;
         }
 
         try {
-            const users = await createUserWithEmailAndPassword(auth, email, password);
-
-            // console.log(users)
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
             const user = {
                 name: name,
-                uid: users.user.uid,
-                email: users.user.email,
-                time : Timestamp.now()
-            }
-            const userRef = collection(fireDB, "users")
+                uid: userCredential.user.uid,
+                email: userCredential.user.email,
+                time: Timestamp.now(),
+            };
+
+            const userRef = collection(fireDB, "users");
             await addDoc(userRef, user);
-            toast.success("Signup Succesfully")
+            toast.success("Signup Successfully");
             setName("");
             setEmail("");
             setPassword("");
-            setLoading(false)
-            
+            setConfirmPassword("");
         } catch (error) {
-            console.log(error)
-            setLoading(false)
+            console.error(error);
+            setError("Error during signup. Please try again.");
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
     return (
-        <div className=' flex justify-center items-center h-screen'>
-            {loading && <Loader/>}
-            <div className=' bg-gray-800 px-10 py-10 rounded-xl '>
-                <div className="">
+        <div className='flex justify-center items-center h-screen'>
+            {loading && <Loader />}
+            <div className='bg-gray-800 px-10 py-10 rounded-xl'>
+                <div>
                     <h1 className='text-center text-white text-xl mb-4 font-bold'>Signup</h1>
                 </div>
                 <div>
@@ -58,7 +70,7 @@ function Signup() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         name='name'
-                        className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                        className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
                         placeholder='Name'
                     />
                 </div>
@@ -68,7 +80,7 @@ function Signup() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         name='email'
-                        className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                        className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
                         placeholder='Email'
                     />
                 </div>
@@ -77,23 +89,38 @@ function Signup() {
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                        className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
                         placeholder='Password'
                     />
                 </div>
-                <div className=' flex justify-center mb-3'>
+                <div>
+                    <input
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        className='bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                        placeholder='Confirm Password'
+                    />
+                </div>
+                <div className='flex justify-center mb-3'>
                     <button
                         onClick={signup}
-                        className=' bg-red-500 w-full text-white font-bold  px-2 py-2 rounded-lg'>
+                        className='bg-red-500 w-full text-white font-bold px-2 py-2 rounded-lg'>
                         Signup
                     </button>
                 </div>
                 <div>
-                    <h2 className='text-white'>Have an account <Link className=' text-red-500 font-bold' to={'/login'}>Login</Link></h2>
+                    <h2 className='text-white'>Have an account <Link className='text-red-500 font-bold' to={'/login'}>Login</Link></h2>
                 </div>
+
+                {error && (
+                    <div className='text-red-500 text-sm text-center mb-4'>
+                        {error}
+                    </div>
+                )}
             </div>
         </div>
     )
 }
 
-export default Signup
+export default Signup;

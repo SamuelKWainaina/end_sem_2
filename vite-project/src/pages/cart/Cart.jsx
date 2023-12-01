@@ -164,6 +164,7 @@ function Cart() {
               </div>
             </div>
             {/* PayPalButton component for payment */}
+            
             <PayPalButton
               amount={grandTotal}
               onSuccess={(details, data) => handlePaymentSuccess(data.orderID)}
