@@ -13,7 +13,6 @@ const ContactUs = () => {
     // Add logic to handle form submission (e.g., sending an email, storing in a database)
   };
 
-  
   return (
     <Layout>
     <div className="container mx-auto p-8">
