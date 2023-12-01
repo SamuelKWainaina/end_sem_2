@@ -9,7 +9,8 @@ function Order() {
   // Access context data
   const context = useContext(myContext)
   const { mode, loading, order } = context
-  return (
+  //Display product description
+   return (
     <Layout>
       {loading && <Loader />}
       {order.length > 0 ?
